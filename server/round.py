@@ -1,5 +1,7 @@
 import time as t
 from _thread import start_new_thread
+from game import Game
+from chat import Chat
 
 
 class Round:
@@ -16,6 +18,7 @@ class Round:
         self.skips = 0
         self.player_scores = {player: 0 for player in players}
         self.time = 75
+        self.chat = Chat(self)
         start_new_thread(self.time_thread, ())
 
     def time_thread(self):
