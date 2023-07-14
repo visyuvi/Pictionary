@@ -1,7 +1,7 @@
 class Board:
     ROWS = COLS = 720
 
-    def __init__(self, rows, cols):
+    def __init__(self):
         self.data = self._create_empty_board()
 
     def update(self, x, y, color):
