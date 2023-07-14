@@ -17,7 +17,7 @@ class Player:
         """
         sets the player's game association
         :param game: Game
-        :return: None 
+        :return: None
         """
         self.game = game
 
@@ -42,7 +42,7 @@ class Player:
         call this to disconnect player
         :return:
         """
-        pass
+        self.game.player_disconnected(self)
 
     def get_score(self):
         """
