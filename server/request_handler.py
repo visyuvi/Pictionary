@@ -29,14 +29,15 @@ class Server:
             try:
                 # Receive request
                 data = conn.recv(1024)
-                data = json.loads(data)
+                data = json.loads(data.decode())
+                print("[LOG] Received  data:", data)
 
                 # PLayer is not a part of a game
-                keys = [key for key in data.keys]
+                keys = data.keys()
                 send_msg = {key: [] for key in keys}
-
                 for key in keys:
-                    if key == 1:  # get game - returns a list of players
+
+                    if key == -1:  # get game - returns a list of players
                         if player.game:
                             send_msg[-1] = player.game.players
                         else:
@@ -83,10 +84,11 @@ class Server:
                         else:
                             raise Exception("Not a valid request")
 
-                conn.sendall(json.dumps(send_msg))
+                conn.sendall(json.dumps(send_msg).encode())
             except Exception as e:
                 print(f"[EXCEPTION] {player.get_name()} disconnected")
                 conn.close()
+                break
                 # TODO call  player game disconnected method
 
     def handle_queue(self, player):
@@ -120,7 +122,8 @@ class Server:
             conn.sendall("1".encode())
             player = Player(addr, name)
             self.handle_queue(player)
-            threading.Thread(target=self.player_thread, args=(conn, player))
+            thread = threading.Thread(target=self.player_thread, args=(conn, player))
+            thread.start()
 
         except Exception as e:
             print("[EXCEPTION]", e)
