@@ -112,7 +112,7 @@ class Server:
         :return:
         """
         try:
-            data = conn.recv(16)
+            data = conn.recv(1024)
             name = str(data.decode())
             if not name:
                 raise Exception("No name received")
@@ -127,7 +127,7 @@ class Server:
             conn.close()
 
     def connection_thread(self):
-        server = ""
+        server = "localhost"
         port = 5555
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -149,4 +149,5 @@ class Server:
 
 if __name__ == "__main__":
     s = Server()
-    threading.Thread(target=s.connection_thread)
+    thread = threading.Thread(target=s.connection_thread)
+    thread.start()

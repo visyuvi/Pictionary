@@ -1,6 +1,5 @@
 import time as t
 from _thread import start_new_thread
-from game import Game
 from chat import Chat
 
 
