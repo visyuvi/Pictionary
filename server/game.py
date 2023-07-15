@@ -6,7 +6,7 @@ import random
 
 class Game:
 
-    def __init__(self, id, players, thread):
+    def __init__(self, id, players):
         """
         initialize the game! once player threshold is met
         :param id: int
@@ -18,7 +18,7 @@ class Game:
         self.round = None
         self.board = Board()
         self.player_draw_ind = 0
-        self.connected_thread = thread
+        self.round_count = 1
         self.start_new_round()
 
     def start_new_round(self):
@@ -29,10 +29,11 @@ class Game:
         round_word = self.get_word()
         self.round = Round(round_word, self.players[self.player_draw_ind], self.players, self)
         self.player_draw_ind += 1
-
+        self.round_count += 1
         if self.player_draw_ind >= len(self.players):
             self.round.end_round("")
             self.end_game()
+
 
     def player_guess(self, player, guess):
         """
@@ -64,6 +65,14 @@ class Game:
         if len(self.players) <= 2:
             self.end_game()
 
+    def get_player_scores(self):
+        """
+        give a dict of player scores
+        :return: dict
+        """
+        scores = {player: player.get_score() for player in self.players}
+        return scores
+
     def skip(self):
         """
         Increments the round skips, if skips are greater than threshold, starts new round
@@ -74,7 +83,7 @@ class Game:
             if new_round:
                 self.round_ended()
         else:
-            raise Exception("No round stared yet")
+            raise Exception("No round started yet")
 
     def round_ended(self):
         """
@@ -117,7 +126,7 @@ class Game:
                 if wrd not in self.words_used:
                     words.append(wrd)
 
-        r = random.randint(0, len(words))
+        r = random.randint(0, len(words) - 1)
         wrd = words[r].strip()
         self.words_used.add(wrd)
 

@@ -16,8 +16,10 @@ class Round:
         self.player_drawing = player_drawing
         self.player_guessed = []
         self.skips = 0
+        self.players = players
         self.player_scores = {player: 0 for player in players}
         self.time = 75
+        self.game = game
         self.chat = Chat(self)
         start_new_thread(self.time_thread, ())
 
@@ -69,6 +71,7 @@ class Round:
         if correct:
             self.player_guessed.append(player)
             # TO DO implement scoring system here
+            return correct
 
     def player_left(self, player):
         """
@@ -87,4 +90,6 @@ class Round:
             self.end_round("Drawing player left!")
 
     def end_round(self, msg):
+        for player in self.players:
+            player.update_score(self.player_scores[player])
         self.game.round_ended()
