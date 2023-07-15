@@ -28,9 +28,12 @@ class Server:
         while True:
             try:
                 # Receive request
-                data = conn.recv(1024)
-                data = json.loads(data.decode())
-                print("[LOG] Received  data:", data)
+                try:
+                    data = conn.recv(1024)
+                    data = json.loads(data.decode())
+                    print("[LOG] Received  data:", data)
+                except:
+                    continue
 
                 # PLayer is not a part of a game
                 keys = data.keys()
@@ -81,15 +84,16 @@ class Server:
                             t = player.game.round.time
                             send_msg[9] = t
 
-                        else:
-                            raise Exception("Not a valid request")
+                    if key == 10:
+                        raise Exception("Not a valid request")
 
                 conn.sendall(json.dumps(send_msg).encode())
             except Exception as e:
                 print(f"[EXCEPTION] {player.get_name()} disconnected")
-                conn.close()
                 break
                 # TODO call  player game disconnected method
+        print(f"[DISCONNECT] {player.name} DISCONNECTED")
+        conn.close()
 
     def handle_queue(self, player):
         """
