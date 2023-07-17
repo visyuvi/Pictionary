@@ -25,14 +25,16 @@ class Game:
         Starts a new round with a new word
         :return:  None
         """
-        round_word = self.get_word()
-        self.round = Round(round_word, self.players[self.player_draw_ind], self.players, self)
-        self.player_draw_ind += 1
-        self.round_count += 1
-        if self.player_draw_ind >= len(self.players):
-            self.round.end_round("")
+        try:
+            round_word = self.get_word()
+            self.round = Round(round_word, self.players[self.player_draw_ind], self)
+            self.round_count += 1
+            if self.player_draw_ind >= len(self.players):
+                self.round_ended()
+                self.end_game()
+            self.player_draw_ind += 1
+        except Exception as e:
             self.end_game()
-
 
     def player_guess(self, player, guess):
         """
@@ -50,7 +52,6 @@ class Game:
         :raises Exception
         :return:
         """
-
         # todo check this
         if player in self.players:
             player_ind = self.players.index(player)
@@ -81,6 +82,9 @@ class Game:
             new_round = self.round.skip()
             if new_round:
                 self.round_ended()
+                return True
+            return False
+
         else:
             raise Exception("No round started yet")
 
@@ -109,9 +113,9 @@ class Game:
         ends the game
         :return:
         """
-        # TODO implement
+        print(f"[GAME] Game {self.id} ended")
         for player in self.players:
-            self.round.player_left(player)
+            player.game = None
 
     def get_word(self):
         """

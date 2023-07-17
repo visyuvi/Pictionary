@@ -1,6 +1,3 @@
-from game import Game
-
-
 class Player:
     def __init__(self, ip, name):
         """
@@ -16,7 +13,7 @@ class Player:
     def set_game(self, game):
         """
         sets the player's game association
-        :param game: Game
+        :param game: game
         :return: None
         """
         self.game = game

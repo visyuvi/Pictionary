@@ -4,7 +4,7 @@ from chat import Chat
 
 
 class Round:
-    def __init__(self, word, player_drawing, players, game):
+    def __init__(self, word, player_drawing, game):
         """
         init object
         :param word: str
@@ -15,10 +15,9 @@ class Round:
         self.player_drawing = player_drawing
         self.player_guessed = []
         self.skips = 0
-        self.players = players
-        self.player_scores = {player: 0 for player in players}
         self.time = 75
         self.game = game
+        self.player_scores = {player: 0 for player in self.game.players}
         self.chat = Chat(self)
         start_new_thread(self.time_thread, ())
 
@@ -28,7 +27,7 @@ class Round:
         :return: bool
         """
         self.skips += 1
-        if self.skips > len(self.players) - 2:
+        if self.skips > len(self.game.players) - 2:
             return True
         return False
 
@@ -69,8 +68,8 @@ class Round:
         correct = wrd == self.word
         if correct:
             self.player_guessed.append(player)
-            # TO DO implement scoring system here
-            return correct
+            # TODO implement scoring system here
+        return correct
 
     def player_left(self, player):
         """
@@ -79,7 +78,7 @@ class Round:
         :return: None
         """
         # might not be able to use player as key in dict
-        if  player in self.player_scores:
+        if player in self.player_scores:
             del self.player_scores[player]
 
         if player in self.player_guessed:
@@ -89,6 +88,7 @@ class Round:
             self.end_round("Drawing player left!")
 
     def end_round(self, msg):
-        for player in self.players:
-            player.update_score(self.player_scores[player])
+        for player in self.game.players:
+            if player in self.player_scores:
+                player.update_score(self.player_scores[player])
         self.game.round_ended()
