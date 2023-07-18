@@ -70,7 +70,9 @@ class Game:
         give a dict of player scores
         :return: dict
         """
-        scores = {player: player.get_score() for player in self.players}
+        print("Here")
+        scores = {player.name: player.get_score() for player in self.players}
+        print("got scores")
         return scores
 
     def skip(self):
@@ -101,7 +103,7 @@ class Game:
         calls update method on board
         :param x: int
         :param y: int
-        :param color: (int, int, int)
+        :param color: 0-8
         :return: None
         """
         if not self.board:

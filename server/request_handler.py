@@ -59,7 +59,6 @@ class Server:
 
                         elif key == 3:  # get  board
                             brd = player.game.board.get_board()
-                            print(brd)
                             send_msg[3] = brd
 
                         elif key == 4:  # get score
@@ -76,7 +75,6 @@ class Server:
                             skips = player.game.round.skips
                             send_msg[7] = skips
 
-
                         elif key == 8:  # update board
                             x, y, color = data[8][:3]
                             player.game.update_board(x, y, color)
@@ -89,6 +87,8 @@ class Server:
                         raise Exception("Not a valid request")
 
                 conn.sendall(json.dumps(send_msg).encode())
+                conn.sendall(".".encode())
+
             except Exception as e:
                 print(f"[EXCEPTION] {player.get_name()}:", e)
                 break

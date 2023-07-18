@@ -13,7 +13,7 @@ class Board:
         Update a singular pixel of the board
         :param x:
         :param y:
-        :param color:
+        :param color: 0 - 8
         :return:
         """
         self.data[y][x] = color
@@ -30,7 +30,7 @@ class Board:
         Creates an empty board
         :return: the created board
         """
-        return [(255, 255, 255) for _ in range(self.COLS) for _ in range(self.ROWS)]
+        return [0 for _ in range(self.COLS) for _ in range(self.ROWS)]
 
     def fill(self, x, y):
         """
