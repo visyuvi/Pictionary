@@ -3,6 +3,7 @@ from button import Button, TextButton
 from board import Board
 from top_bar import TopBar
 from main_menu import MainMenu
+from chat import Chat
 from leaderboard import Leaderboard
 from player import Player
 from bottom_bar import BottomBar
@@ -22,6 +23,7 @@ class Game:
         self.players = [Player("Vishal"), Player("Prakrati"), Player("Karan"), Player("Tripti"), Player("Surabhi")]
         self.skip_button = TextButton(85, 810, 100, 50, (255, 255, 0), "Skip")
         self.bottom_bar = BottomBar(305, 860, self)
+        self.chat = Chat(1030, 121)
         self.draw_color = 1
         for player in self.players:
             self.leaderboard.add_player(player)
@@ -33,6 +35,7 @@ class Game:
         self.board.draw(self.win)
         self.skip_button.draw(self.win)
         self.bottom_bar.draw(self.win)
+        self.chat.draw(self.win)
         pygame.display.update()
 
     def check_clicks(self):
@@ -64,6 +67,7 @@ class Game:
                 if pygame.mouse.get_pressed()[0]:
                     self.check_clicks()
                     self.bottom_bar.button_events()
+
 
         pygame.quit()
 
