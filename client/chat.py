@@ -19,8 +19,8 @@ class Chat:
 
         self.CHAT_GAP = 20
 
-    def update_chat(self, msg):
-        self.content.append(msg)
+    def update_chat(self):
+        self.content.append(self.typing)
 
     def draw(self, win):
 
@@ -30,7 +30,6 @@ class Chat:
         pygame.draw.rect(win, (0, 0, 0), (self.x, self.y, self.WIDTH, self.HEIGHT), self.BORDER_THICKNESS)
 
         while len(self.content) * self.CHAT_GAP > self.HEIGHT - 60:
-            print(len(self.content))
             self.content = self.content[: -1]
 
         for i, chat in enumerate(self.content):
@@ -49,6 +48,5 @@ class Chat:
         elif len(char) == 1:
             self.typing += char
 
-        print(len(self.typing))
         if len(self.typing) >= 19:
             self.typing = self.typing[:19]

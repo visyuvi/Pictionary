@@ -37,9 +37,10 @@ class Leaderboard:
             name = self.name_font.render(score[0], 1, (0, 0, 0))
             win.blit(name, (self.x + self.WIDTH / 2 - name.get_width() / 2 + 10, self.y + i * self.HEIGHT_ENTRY + 20))
 
-            score = self.score_font.render("Score : " + str(score[1]), 1, (0, 0, 0))
-            win.blit(score, (self.x + self.WIDTH / 2 - name.get_width() / 2 + 10, self.y + i * self.HEIGHT_ENTRY + 40))
-            pygame.draw.rect(win, (0, 0, 0), (self.x, self.y , self.WIDTH, self.HEIGHT_ENTRY * len(scores)), self.BORDER_THICKNESS)
+            Score = self.score_font.render("Score : " + str(score[1]), 1, (0, 0, 0))
+            win.blit(Score, (self.x + self.WIDTH / 2 - name.get_width() / 2 + 10, self.y + i * self.HEIGHT_ENTRY + 40))
+            pygame.draw.rect(win, (0, 0, 0), (self.x, self.y, self.WIDTH, self.HEIGHT_ENTRY * len(scores)),
+                             self.BORDER_THICKNESS)
 
     def add_player(self, player):
         self.players.append(player)

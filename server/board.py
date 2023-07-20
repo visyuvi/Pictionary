@@ -1,5 +1,5 @@
 class Board:
-    ROWS = COLS = 720
+    ROWS = COLS = 90
 
     def __init__(self):
         """
@@ -30,7 +30,7 @@ class Board:
         Creates an empty board
         :return: the created board
         """
-        return [0 for _ in range(self.COLS) for _ in range(self.ROWS)]
+        return [[0 for _ in range(self.COLS)] for _ in range(self.ROWS)]
 
     def fill(self, x, y):
         """
