@@ -15,6 +15,8 @@ class Chat:
         self.content = []
         self.typing = ""
         self.chat_font = pygame.font.SysFont("comicsans", 20)
+        self.type_font = pygame.font.SysFont("comicsans", 22)
+
         self.CHAT_GAP = 20
 
     def update_chat(self, msg):
@@ -35,14 +37,18 @@ class Chat:
             txt = self.chat_font.render(" - " + chat, 1, (0, 0, 0))
             win.blit(txt, (self.x + 15, 10 + self.y + i * self.CHAT_GAP))
 
-        #  TODO: fix the code below if it is  behaves buggy during realtime chat update
-
-        type_chat = self.chat_font.render(self.typing, 1, (0, 0, 0))
+        type_chat = self.type_font.render(self.typing, 1, (0, 0, 0))
         win.blit(type_chat, (self.x + 5, self.y + self.HEIGHT - 20 - type_chat.get_height() / 2))
 
-    def type(self, char, delete=False):
-        if delete:
+    def type(self, char):
+        if char == "BACKSPACE":
             if len(self.typing) > 0:
-                self.typing = self.typing[-1]
-        else:
+                self.typing = self.typing[:-1]
+        elif char == "SPACE":
+            self.typing += " "
+        elif len(char) == 1:
             self.typing += char
+
+        print(len(self.typing))
+        if len(self.typing) >= 19:
+            self.typing = self.typing[:19]

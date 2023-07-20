@@ -68,6 +68,11 @@ class Game:
                     self.check_clicks()
                     self.bottom_bar.button_events()
 
+                if event.type == pygame.KEYDOWN:
+                    key_name = pygame.key.name(event.key)
+
+                    key_name = key_name.upper()
+                    self.chat.type(key_name)
 
         pygame.quit()
 
