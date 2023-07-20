@@ -14,6 +14,17 @@ class BottomBar:
         7: (139, 69, 19),
         8: (128, 0, 128)
     }
+    COLORS_REV = {
+         (255, 255, 255): 0,
+         (0, 0, 0): 1,
+         (255, 0, 0): 2,
+         (0, 255, 0): 3,
+         (0, 0, 255): 4,
+         (255, 255, 0): 5,
+         (255, 140, 0): 6,
+         (139, 69, 19): 7,
+         (128, 0, 128): 8,
+    }
 
     def __init__(self, x, y, game):
         self.x = x
@@ -43,6 +54,7 @@ class BottomBar:
 
         for btn in self.color_buttons:
             btn.draw(win)
+
     def button_events(self):
         """
         handle all button press events
@@ -56,8 +68,8 @@ class BottomBar:
 
         if self.eraser_button.click(*mouse):
             print("Pressed erase button")
-            self.game.draw_color = (255, 255, 255)
+            self.game.draw_color = self.COLORS_REV[(255, 255, 255)]
 
         for btn in self.color_buttons:
             if btn.click(*mouse):
-                self.game.draw_color = btn.color
+                self.game.draw_color = self.COLORS_REV[btn.color]

@@ -55,6 +55,8 @@ class Game:
         clicked_board = self.board.click(*mouse)
         if clicked_board:
             self.board.update(*clicked_board, self.draw_color)
+            # send updated board to server
+            self.connection.send({8: [*clicked_board, self.draw_color]})
 
     def run(self):
         run = True
@@ -63,6 +65,7 @@ class Game:
             clock.tick(60)
 
             try:
+                # get board from server
                 response = self.connection.send({3: []})
                 self.board.compressed_board = response
                 self.board.translate_board()
@@ -94,7 +97,6 @@ class Game:
                         self.chat.type(key_name)
 
         pygame.quit()
-
 
 # if __name__ == "__main__":
 #     pygame.init()

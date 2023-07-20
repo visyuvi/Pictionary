@@ -76,7 +76,7 @@ class Server:
                             send_msg[7] = skips
 
                         elif key == 8:  # update board
-                            x, y, color = data[8][:3]
+                            x, y, color = data['8'][:3]
                             player.game.update_board(x, y, color)
 
                         elif key == 9:  # get round time
