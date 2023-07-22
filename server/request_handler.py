@@ -36,6 +36,7 @@ class Server:
                 # Player is not a part of a game
                 keys = [int(key) for key in data.keys()]
                 send_msg = {key: [] for key in keys}
+                last_board = None
                 for key in keys:
                     if key == -1:  # get game - returns a list of players
                         if player.game:
@@ -58,7 +59,11 @@ class Server:
 
                         elif key == 3:  # get  board
                             brd = player.game.board.get_board()
-                            send_msg[3] = brd
+                            if last_board != brd:
+                                last_board = brd
+                                send_msg[3] = brd
+
+
 
                         elif key == 4:  # get score
                             scores = player.game.get_player_scores()
@@ -78,13 +83,15 @@ class Server:
                             if player.game.round.player_drawing == player:
                                 x, y, color = data['8'][:3]
                                 player.game.update_board(x, y, color)
-
                         elif key == 9:  # get round time
                             t = player.game.round.time
                             send_msg[9] = t
 
                         elif key == 10:  # clear board
                             player.game.board.clear()
+
+                        elif key == 11:
+                            send_msg[11] = player.game.round.player_drawing == player
 
                     # if key == 10:  # disconnect received from client
                     #     raise Exception("Not a valid request")
