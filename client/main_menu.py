@@ -50,6 +50,7 @@ class MainMenu:
                 if response:
                     run = False
                     g = Game(self.win, self.n)
+                    # Getting the list of players from server and adding them to g.players
                     for player in response:
                         p = Player(player)
                         g.add_player(p)

@@ -11,7 +11,7 @@ import json
 
 
 class Server:
-    PLAYERS = 1
+    PLAYERS = 4
 
     def __init__(self):
         self.connection_queue = []
@@ -31,9 +31,8 @@ class Server:
                 try:
                     data = conn.recv(1024)
                     data = json.loads(data.decode())
-                    print("[LOG] Received  data:", data)
                 except Exception as e:
-                    continue
+                    break
                 # Player is not a part of a game
                 keys = [int(key) for key in data.keys()]
                 send_msg = {key: [] for key in keys}
@@ -50,7 +49,7 @@ class Server:
                             send_msg[0] = correct
 
                         elif key == 1:  # skip
-                            skip = player.game.skip()
+                            skip = player.game.skip(player)
                             send_msg[1] = skip
 
                         elif key == 2:  # get chat
@@ -76,15 +75,19 @@ class Server:
                             send_msg[7] = skips
 
                         elif key == 8:  # update board
-                            x, y, color = data['8'][:3]
-                            player.game.update_board(x, y, color)
+                            if player.game.round.player_drawing == player:
+                                x, y, color = data['8'][:3]
+                                player.game.update_board(x, y, color)
 
                         elif key == 9:  # get round time
                             t = player.game.round.time
                             send_msg[9] = t
 
-                    if key == 10:  # disconnect received from client
-                        raise Exception("Not a valid request")
+                        elif key == 10:  # clear board
+                            player.game.board.clear()
+
+                    # if key == 10:  # disconnect received from client
+                    #     raise Exception("Not a valid request")
 
                 conn.sendall(json.dumps(send_msg).encode())
                 conn.sendall(".".encode())
@@ -94,7 +97,8 @@ class Server:
                 break
 
         print(f"[DISCONNECT] {player.name} DISCONNECTED")
-        # player.game.player_disconnected(player)
+        if player.game:
+            player.game.player_disconnected(player)
         conn.close()
 
     def handle_queue(self, player):

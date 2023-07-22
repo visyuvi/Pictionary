@@ -5,7 +5,7 @@ from top_bar import TopBar
 from chat import Chat
 from leaderboard import Leaderboard
 from bottom_bar import BottomBar
-
+from player import Player
 pygame.init()
 
 
@@ -50,7 +50,8 @@ class Game:
 
         # Check click on skip button
         if self.skip_button.click(*mouse):
-            print("Clicked skip button")
+            skips = self.connection.send({1: []})
+            print("Skips", skips)
 
         clicked_board = self.board.click(*mouse)
         if clicked_board:
@@ -69,6 +70,28 @@ class Game:
                 response = self.connection.send({3: []})
                 self.board.compressed_board = response
                 self.board.translate_board()
+
+                # get time from server
+                response = self.connection.send({9: []})
+                self.top_bar.time = response
+
+                # get chat
+                response = self.connection.send({2: []})
+                self.chat.update_chat(response)
+
+                # get round word and round number
+                if self.top_bar.word == "":
+                    self.top_bar.word = self.connection.send({6: []})
+                    self.top_bar.round = self.connection.send({5: []})
+                    self.top_bar.max_round = len(self.players)
+
+                # get player updates
+                '''response = self.connection.send({0: []})
+                # self.players = []
+                for player in response:
+                    p = Player(player)
+                    self.add_player(p)
+'''
             except:
                 run = False
                 break
@@ -83,9 +106,7 @@ class Game:
                     self.bottom_bar.button_events()
 
                 if event.type == pygame.KEYDOWN:
-
                     if event.key == pygame.K_RETURN:
-                        self.chat.update_chat()
                         self.connection.send({0: [self.chat.typing]})
                         self.chat.typing = ""
                     else:

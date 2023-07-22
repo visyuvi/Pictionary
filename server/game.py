@@ -54,9 +54,9 @@ class Game:
         """
         # todo check this
         if player in self.players:
-            player_ind = self.players.index(player)
-            if player_ind > self.player_draw_ind:
-                self.player_draw_ind -= 1
+            # player_ind = self.players.index(player)
+            # if player_ind > self.player_draw_ind:
+            #     self.player_draw_ind -= 1
             self.players.remove(player)
             self.round.player_left(player)
             self.round.chat.update_chat(f"Player {player.get_name()} disconnected.")
@@ -72,19 +72,17 @@ class Game:
         give a dict of player scores
         :return: dict
         """
-        print("Here")
         scores = {player.name: player.get_score() for player in self.players}
-        print("got scores")
         return scores
 
-    def skip(self):
+    def skip(self, player):
         """
         Increments the round skips, if skips are greater than threshold, starts new round
         :return: None
         """
         if self.round:
-            new_round = self.round.skip()
-            self.round.chat.update_chat(f"Player has voted to skip ({self.round.skips}/{len(self.players) - 2})")
+            new_round = self.round.skip(player)
+            # self.round.chat.update_chat(f"Player has voted to skip ({self.round.skips}/{len(self.players) - 2})")
             if new_round:
                 self.round.chat.update_chat("fRound has been skipped.")
                 self.round_ended()

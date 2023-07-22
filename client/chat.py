@@ -19,8 +19,8 @@ class Chat:
 
         self.CHAT_GAP = 20
 
-    def update_chat(self):
-        self.content.append(self.typing)
+    def update_chat(self, content):
+        self.content = content
 
     def draw(self, win):
 
